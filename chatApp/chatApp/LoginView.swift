@@ -14,7 +14,7 @@ struct LoginView: View {
     @State private var isLoginMode = false
     @State private var email = ""
     @State private var password = ""
-        
+    
     @State var shouldShowImagePicker = false
     
     var body: some View {
@@ -28,7 +28,7 @@ struct LoginView: View {
                         Text("Create Account")
                             .tag(false)
                     }.pickerStyle(SegmentedPickerStyle())
-                        
+                    
                     if !isLoginMode {
                         Button {
                             shouldShowImagePicker.toggle()
@@ -49,9 +49,14 @@ struct LoginView: View {
                                 }
                             }
                             .overlay(RoundedRectangle(cornerRadius: 64)
-                                        .stroke(Color.black, lineWidth: 3)
+                                .stroke(Color.black, lineWidth: 3)
                             )
+                        }
+                        
+                        if let image = self.image {
                             
+                        } else {
+                            Text("Please select a profile picture")
                         }
                     }
                     
@@ -86,7 +91,7 @@ struct LoginView: View {
             }
             .navigationTitle(isLoginMode ? "Log In" : "Create Account")
             .background(Color(.init(white: 0, alpha: 0.05))
-                            .ignoresSafeArea())
+                .ignoresSafeArea())
         }
         .navigationViewStyle(StackNavigationViewStyle())
         .fullScreenCover(isPresented: $shouldShowImagePicker, onDismiss: nil) {
@@ -98,11 +103,11 @@ struct LoginView: View {
     
     private func handleAction() {
         if isLoginMode {
-//            print("Should log into Firebase with existing credentials")
+            //            print("Should log into Firebase with existing credentials")
             loginUser()
         } else {
             createNewAccount()
-//            print("Register a new account inside of Firebase Auth and then store image in Storage somehow....")
+            //            print("Register a new account inside of Firebase Auth and then store image in Storage somehow....")
         }
     }
     
@@ -146,7 +151,7 @@ struct LoginView: View {
     }
     
     private func persistImageToStorage() {
-//        let filename = UUID().uuidString
+        //        let filename = UUID().uuidString
         guard let uid = FirebaseManager.shared.auth.currentUser?.uid else { return }
         let ref = FirebaseManager.shared.storage.reference(withPath: uid)
         guard let imageData = self.image?.jpegData(compressionQuality: 0.5) else { return }
@@ -190,7 +195,6 @@ struct LoginView: View {
                 self.didCompleteLoginProcess()
             }
     }
-            
 }
 
 #Preview {
